@@ -1,19 +1,30 @@
-## api routes 추가
+## 프로젝트 환경 설정
 
-<details>
+> [Next.js Environment Variables Docs](https://nextjs.org/docs/app/building-your-application/configuring/environment-variables)
+
+<details open>
+<summary>프로젝트를 실행하기 전에 root 디렉토리에 .env.local 파일을 만들어 다음 환경변수를 추가해야합니다.</summary>
+
+```
+JWT_SECRET_KEY=jwt_secret_key
+```
+
+</details>
+
+</br>
+
+## api route handler 추가
+
+> [Next.js Route Handlers Docs](https://nextjs.org/docs/app/building-your-application/routing/route-handlers)
+
+<details open>
 <summary>POST /signin</summary>
 
-```javascript
-interface User {
-  username: string;
-  password: string;
-}
+![api-result-post-signin](/src/assets/api-result-post-signin.png)
 
-/** 회원가입이 되어있는 유저 */
-const REGISTERED_USER: User = {
-  username: "harry0691",
-  password: "0000",
-};
+```typescript
+import { JWT_SECRET_KEY, REGISTERED_USER } from "@constants";
+import jwt from "jsonwebtoken";
 
 /** POST /signin */
 export async function POST(request: Request) {
@@ -22,10 +33,11 @@ export async function POST(request: Request) {
 
     const isValidUsername = REGISTERED_USER.username === requestBody?.username;
     const isValidPassword = REGISTERED_USER.password === requestBody?.password;
-
     const isValidUser = isValidUsername && isValidPassword;
 
-    if (isValidUser) return Response.json({ token: "token_placeholder" });
+    const token = jwt.sign(requestBody, JWT_SECRET_KEY);
+
+    if (isValidUser) return Response.json({ token: token });
     else throw new Error("Invalid username or password");
   } catch {
     return Response.error();
@@ -39,11 +51,27 @@ export async function POST(request: Request) {
 - POST /signout
 - GET /user
 
+</br>
+
+## jsonwebtoken 라이브러리 사용
+
+> [jsonwebtoken github Docs](https://github.com/auth0/node-jsonwebtoken#readme)
+
+<details open>
+<summary>jwt.sign()</summary>
+
+- `claim`과 `signature`를 받아 암호화된 JSON Web Token을 string으로 반환 (암호화 알고리즘 디폴트 값은 `HMAC SHA256`, `options`로 변경 가능)
+</details>
+
+</br>
+
 ## login form 추가
 
 - id, pw 입력 form 추가
 
-## jwt local storage 보관/제거
+</br>
+
+## 토큰을 local storage에 보관/제거
 
 - 토큰 브라우저 저장소에 write read delete
 
