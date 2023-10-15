@@ -1,3 +1,20 @@
+## api routes 추가
+
+- POST /signup
+- POST /signin
+- POST /signout
+- GET /user
+
+## login form 추가
+
+- id, pw 입력 form 추가
+
+## jwt local storage 보관/제거
+
+- 토큰 브라우저 저장소에 write read delete
+
+---
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
