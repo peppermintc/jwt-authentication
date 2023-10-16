@@ -3,14 +3,22 @@
 import { FormEvent } from "react";
 
 const LoginForm = () => {
-  const onLoginFormSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const onLoginFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const formData = new FormData(e.currentTarget);
-    const username = formData.get("username") ?? "";
-    const password = formData.get("password") ?? "";
 
-    console.log("onLoginFormSubmit", { username, password });
+    const response = await fetch("http://localhost:3000/api/signin", {
+      method: "POST",
+      body: formData,
+    });
+
+    if (response.ok) {
+      const { token } = await response.json();
+      console.log("Save token", token);
+    } else {
+      console.error("Login form submit failed");
+    }
   };
 
   return (

@@ -2,25 +2,25 @@
 /** jsonwebtoken 문서: https://github.com/auth0/node-jsonwebtoken */
 
 import { JWT_SECRET_KEY, REGISTERED_USER } from "@constants";
-import { userTypeGuard } from "@utils";
 import jwt from "jsonwebtoken";
 
 /** POST /signin */
 export async function POST(request: Request) {
   try {
-    const requestBody = await request.json();
+    const requestFormData = await request.formData();
 
-    userTypeGuard(requestBody);
+    const username = requestFormData.get("username");
+    const password = requestFormData.get("password");
 
-    const isValidUsername = REGISTERED_USER.username === requestBody.username;
-    const isValidPassword = REGISTERED_USER.password === requestBody.password;
+    const isValidUsername = REGISTERED_USER.username === username;
+    const isValidPassword = REGISTERED_USER.password === password;
     const isValidUser = isValidUsername && isValidPassword;
 
-    const token = jwt.sign(requestBody, JWT_SECRET_KEY);
+    const token = jwt.sign({ username, password }, JWT_SECRET_KEY);
 
     if (isValidUser) return Response.json({ token });
     else throw new Error("Invalid username or password");
   } catch {
-    return Response.error();
+    return new Response("Internal Server Error", { status: 500 });
   }
 }
