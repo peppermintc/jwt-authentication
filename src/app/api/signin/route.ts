@@ -1,7 +1,7 @@
 /** Route Handler 문서: https://nextjs.org/docs/app/building-your-application/routing/route-handlers */
 /** jsonwebtoken 문서: https://github.com/auth0/node-jsonwebtoken */
 
-import { JWT_SECRET_KEY, REGISTERED_USER } from "@constants";
+import { JWT_SECRET_KEY, REGISTERED_USER } from "@/constants";
 import jwt from "jsonwebtoken";
 
 /** POST /signin */

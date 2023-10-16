@@ -1,4 +1,4 @@
-import { User } from "@types";
+import { User } from "@/types";
 
 /** JWT secret key */
 const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY ?? "";

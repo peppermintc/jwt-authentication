@@ -74,6 +74,8 @@ export async function POST(request: Request) {
 
 > [Jest Docs](https://jestjs.io/docs/getting-started)
 
+> [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/)
+
 <details open>
 <summary>리렌더링 효율을 위해 useState 대신 formData 활용</summary>
 
@@ -111,11 +113,37 @@ export default LoginForm;
 <summary>컴포넌트 테스트 코드 작성</summary>
 
 ```javascript
-// 초기 스펙 작성
-describe.skip("LoginForm 컴포넌트", () => {
-  test("유효한 유저 정보로 로그인 성공", async () => {});
+import LoginForm from ".";
+import { render, fireEvent } from "@testing-library/react";
 
-  test("유효하지 않은 유저 정보로 로그인 실패", async () => {});
+describe("LoginForm 컴포넌트", () => {
+  test("유효한 유저 정보로 로그인 성공시 세션 스토리지에 JWT 토큰 저장", async () => {
+    const { getByLabelText, getByRole } = render(<LoginForm />);
+
+    const usernameInput = getByLabelText("Username");
+    const passwordInput = getByLabelText("Password");
+    const submitButton = getByRole("button");
+
+    fireEvent.change(usernameInput, { target: { value: "harry0691" } });
+    fireEvent.change(passwordInput, { target: { value: "0000" } });
+    fireEvent.click(submitButton);
+
+    expect(localStorage.getItem("jwt-token")).not.toBeNull();
+  });
+
+  test("유효하지 않은 유저 정보로 로그인 실패", async () => {
+    const { getByLabelText, getByRole } = render(<LoginForm />);
+
+    const usernameInput = getByLabelText("Username");
+    const passwordInput = getByLabelText("Password");
+    const submitButton = getByRole("button");
+
+    fireEvent.change(usernameInput, { target: { value: "invalid-username" } });
+    fireEvent.change(passwordInput, { target: { value: "0000" } });
+    fireEvent.click(submitButton);
+
+    expect(localStorage.getItem("jwt-token")).toBeNull();
+  });
 });
 ```
 

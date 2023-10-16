@@ -1,5 +1,6 @@
 "use client";
 
+import axios from "axios";
 import { FormEvent } from "react";
 
 const LoginForm = () => {
@@ -8,13 +9,14 @@ const LoginForm = () => {
 
     const formData = new FormData(e.currentTarget);
 
-    const response = await fetch("http://localhost:3000/api/signin", {
+    const response = await axios({
       method: "POST",
-      body: formData,
+      url: "http://localhost:3000/api/signin",
+      data: formData,
     });
 
-    if (response.ok) {
-      const { token } = await response.json();
+    if (response.statusText === "OK") {
+      const { token } = await response.data;
       console.log("Save token", token);
     } else {
       console.error("Login form submit failed");
@@ -23,8 +25,12 @@ const LoginForm = () => {
 
   return (
     <form onSubmit={onLoginFormSubmit}>
-      <input type="text" name="username" />
-      <input type="password" name="password" />
+      <label htmlFor="username">Username</label>
+      <input id="username" type="text" name="username" />
+
+      <label htmlFor="password">Password</label>
+      <input id="password" type="password" name="password" />
+
       <button>Login</button>
     </form>
   );
