@@ -1,5 +1,8 @@
 import { User } from "@/types";
 
+/** API Call Base URL */
+const BASE_URL = "http://localhost:3000";
+
 /** JWT secret key */
 const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY ?? "";
 
@@ -9,4 +12,4 @@ const REGISTERED_USER: User = {
   password: "0000",
 };
 
-export { JWT_SECRET_KEY, REGISTERED_USER };
+export { BASE_URL, JWT_SECRET_KEY, REGISTERED_USER };

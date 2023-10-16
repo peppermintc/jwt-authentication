@@ -1,5 +1,6 @@
 "use client";
 
+import { BASE_URL } from "@/constants";
 import axios from "axios";
 import { FormEvent } from "react";
 
@@ -11,7 +12,7 @@ const LoginForm = () => {
 
     const response = await axios({
       method: "POST",
-      url: "http://localhost:3000/api/signin",
+      url: `${BASE_URL}/api/signin`,
       data: formData,
     });
 
