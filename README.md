@@ -68,9 +68,44 @@ export async function POST(request: Request) {
 
 </br>
 
-## login form 추가
+## Login form 추가
 
-- id, pw 입력 form 추가
+> [FormData Web API Mozilla Docs](https://developer.mozilla.org/en-US/docs/Web/API/FormData/FormData)
+
+<details open>
+<summary>리렌더링 효율을 위해 useState 대신 formData 활용</summary>
+
+```typescript
+"use client";
+
+import { FormEvent } from "react";
+
+const LoginForm = () => {
+  const onLoginFormSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const formData = new FormData(e.currentTarget);
+    const username = formData.get("username") ?? "";
+    const password = formData.get("password") ?? "";
+
+    console.log("onLoginFormSubmit", { username, password });
+  };
+
+  return (
+    <form onSubmit={onLoginFormSubmit}>
+      <input type="text" name="username" />
+      <input type="password" name="password" />
+      <button>Login</button>
+    </form>
+  );
+};
+
+export default LoginForm;
+```
+
+</details>
+
+- 컴포넌트 테스트 코드 작성
 
 </br>
 
