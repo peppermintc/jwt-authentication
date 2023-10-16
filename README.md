@@ -72,6 +72,8 @@ export async function POST(request: Request) {
 
 > [FormData Web API Mozilla Docs](https://developer.mozilla.org/en-US/docs/Web/API/FormData/FormData)
 
+> [Jest Docs](https://jestjs.io/docs/getting-started)
+
 <details open>
 <summary>리렌더링 효율을 위해 useState 대신 formData 활용</summary>
 
@@ -105,7 +107,19 @@ export default LoginForm;
 
 </details>
 
-- 컴포넌트 테스트 코드 작성
+<details open>
+<summary>컴포넌트 테스트 코드 작성</summary>
+
+```javascript
+// 초기 스펙 작성
+describe.skip("LoginForm 컴포넌트", () => {
+  test("유효한 유저 정보로 로그인 성공", async () => {});
+
+  test("유효하지 않은 유저 정보로 로그인 실패", async () => {});
+});
+```
+
+</details>
 
 </br>
 
