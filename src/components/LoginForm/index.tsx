@@ -1,11 +1,14 @@
 "use client";
 
+import { userInfoAtom } from "@/atoms";
 import { BASE_URL } from "@/constants";
 import axios from "axios";
 import { FormEvent, useState } from "react";
+import { useSetRecoilState } from "recoil";
 
 const LoginForm = () => {
   const [isLoginButtonDisabled, setIsLoginButtonDisabled] = useState(true);
+  const setUserInfo = useSetRecoilState(userInfoAtom);
 
   const onLoginFormChange = (e: FormEvent<HTMLFormElement>) => {
     const formData = new FormData(e.currentTarget);
@@ -38,25 +41,31 @@ const LoginForm = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      console.log("getUserResponse", getUserResponse);
+      if (getUserResponse.statusText === "OK") {
+        setUserInfo({ username: getUserResponse.data.username });
+      }
     }
   };
 
   return (
-    <form onChange={onLoginFormChange} onSubmit={onLoginFormSubmit}>
-      <label htmlFor="username">Username</label>
-      <input id="username" type="text" name="username" />
+    <>
+      <h2>Login Form</h2>
 
-      <label htmlFor="password">Password</label>
-      <input id="password" type="password" name="password" />
+      <form onChange={onLoginFormChange} onSubmit={onLoginFormSubmit}>
+        <label htmlFor="username">Username</label>
+        <input id="username" type="text" name="username" />
 
-      <button
-        disabled={isLoginButtonDisabled}
-        aria-disabled={isLoginButtonDisabled}
-      >
-        Login
-      </button>
-    </form>
+        <label htmlFor="password">Password</label>
+        <input id="password" type="password" name="password" />
+
+        <button
+          disabled={isLoginButtonDisabled}
+          aria-disabled={isLoginButtonDisabled}
+        >
+          Login
+        </button>
+      </form>
+    </>
   );
 };
 

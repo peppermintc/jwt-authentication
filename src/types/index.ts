@@ -1,8 +1,11 @@
-/** 유저 계정 타입 */
+/** 로그인 유저 계정 타입 */
 interface User {
   username: string;
   password: string;
 }
+
+/** 유저 정보 타입 */
+type UserInfo = Pick<User, "username">;
 
 /** Decoded JWT 토큰 */
 interface DecodedToken {
@@ -11,4 +14,4 @@ interface DecodedToken {
   iat: number;
 }
 
-export type { User, DecodedToken };
+export type { User, UserInfo, DecodedToken };
