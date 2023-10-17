@@ -50,9 +50,39 @@ export async function POST(request: Request) {
 
 </details>
 
-- POST /signup
+<details>
+<summary>GET /user</summary>
+
+![api-result-get-user](/src/assets/api-result-get-user.png)
+
+Request Authorization Header에 토큰이 함께 전달되지 않았다면 401 에러 반환
+
+```typescript
+import { JWT_SECRET_KEY } from "@/constants";
+import { DecodedToken } from "@/types";
+import jwt from "jsonwebtoken";
+
+/** GET /user */
+export async function GET(request: Request) {
+  try {
+    const authorizationHeader = request.headers.get("authorization");
+
+    if (!authorizationHeader) throw new Error("No authorizzation header");
+
+    const token = authorizationHeader.replace("Bearer ", "");
+    const { username } = jwt.verify(token, JWT_SECRET_KEY) as DecodedToken;
+
+    return Response.json({ username });
+  } catch {
+    return new Response("Unauthorized", { status: 401 });
+  }
+}
+```
+
+</details>
+
 - POST /signout
-- GET /user
+- POST /signup
 
 </br>
 
@@ -60,10 +90,16 @@ export async function POST(request: Request) {
 
 > [jsonwebtoken github Docs](https://github.com/auth0/node-jsonwebtoken#readme)
 
-<details open>
+<details>
 <summary>jwt.sign()</summary>
 
 - `claim`과 `signature`를 받아 암호화된 JSON Web Token을 string으로 반환 (암호화 알고리즘 디폴트 값은 `HMAC SHA256`, `options`로 변경 가능)
+</details>
+
+<details>
+<summary>jwt.verify()</summary>
+
+- jwt token을 검증하고 decode하여 `claim`을 반환
 </details>
 
 </br>

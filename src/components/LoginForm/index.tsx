@@ -21,15 +21,24 @@ const LoginForm = () => {
 
     const formData = new FormData(e.currentTarget);
 
-    const response = await axios({
+    const postSignInResponse = await axios({
       method: "POST",
       url: `${BASE_URL}/api/signin`,
       data: formData,
     });
 
-    if (response.statusText === "OK") {
-      const { token } = await response.data;
+    if (postSignInResponse.statusText === "OK") {
+      const { token } = await postSignInResponse.data;
+
       sessionStorage.setItem("jwt-token", token);
+
+      const getUserResponse = await axios({
+        method: "GET",
+        url: `${BASE_URL}/api/user`,
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      console.log("getUserResponse", getUserResponse);
     }
   };
 
