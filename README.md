@@ -81,7 +81,29 @@ export async function GET(request: Request) {
 
 </details>
 
-- POST /signout
+<details>
+<summary>POST /signout</summary>
+
+```typescript
+/** POST /signout */
+export async function POST(request: Request) {
+  try {
+    const authorizationHeader = request.headers.get("authorization");
+
+    if (!authorizationHeader) throw new Error("No authorizzation header");
+
+    const token = authorizationHeader.replace("Bearer ", "");
+    jwt.verify(token, JWT_SECRET_KEY) as DecodedToken;
+
+    return new Response("Signout", { status: 200 });
+  } catch {
+    return new Response("Unauthorized", { status: 401 });
+  }
+}
+```
+
+</details>
+
 - POST /signup
 
 </br>
