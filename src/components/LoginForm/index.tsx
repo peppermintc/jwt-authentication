@@ -67,6 +67,9 @@ const LoginForm = () => {
       {!userInfo && (
         <>
           <h2>Login Form</h2>
+          <h3>로그인 가능 유저 정보</h3>
+          <p>username: harry0691</p>
+          <p>password: 0000</p>
           <form onChange={onLoginFormChange} onSubmit={onLoginFormSubmit}>
             <label htmlFor="username">Username</label>
             <input id="username" type="text" name="username" />
