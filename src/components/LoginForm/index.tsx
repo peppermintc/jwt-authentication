@@ -4,11 +4,11 @@ import { userInfoAtom } from "@/atoms";
 import { BASE_URL } from "@/constants";
 import axios from "axios";
 import { FormEvent, useState } from "react";
-import { useSetRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 
 const LoginForm = () => {
   const [isLoginButtonDisabled, setIsLoginButtonDisabled] = useState(true);
-  const setUserInfo = useSetRecoilState(userInfoAtom);
+  const [userInfo, setUserInfo] = useRecoilState(userInfoAtom);
 
   const onLoginFormChange = (e: FormEvent<HTMLFormElement>) => {
     const formData = new FormData(e.currentTarget);
@@ -47,24 +47,49 @@ const LoginForm = () => {
     }
   };
 
+  const onLogoutButtonClick = async () => {
+    const token = sessionStorage.getItem("jwt-token");
+
+    const postSignOutResponse = await axios({
+      method: "POST",
+      url: `${BASE_URL}/api/signout`,
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    if (postSignOutResponse.statusText === "OK") {
+      sessionStorage.removeItem("jwt-token");
+      setUserInfo(null);
+    }
+  };
+
   return (
     <>
-      <h2>Login Form</h2>
+      {!userInfo && (
+        <>
+          <h2>Login Form</h2>
+          <form onChange={onLoginFormChange} onSubmit={onLoginFormSubmit}>
+            <label htmlFor="username">Username</label>
+            <input id="username" type="text" name="username" />
 
-      <form onChange={onLoginFormChange} onSubmit={onLoginFormSubmit}>
-        <label htmlFor="username">Username</label>
-        <input id="username" type="text" name="username" />
+            <label htmlFor="password">Password</label>
+            <input id="password" type="password" name="password" />
 
-        <label htmlFor="password">Password</label>
-        <input id="password" type="password" name="password" />
+            <button
+              disabled={isLoginButtonDisabled}
+              aria-disabled={isLoginButtonDisabled}
+            >
+              Login
+            </button>
+          </form>
+        </>
+      )}
 
-        <button
-          disabled={isLoginButtonDisabled}
-          aria-disabled={isLoginButtonDisabled}
-        >
-          Login
-        </button>
-      </form>
+      {userInfo && (
+        <>
+          <h2>Logout Button</h2>
+          <button onClick={onLogoutButtonClick}>Logout</button>
+        </>
+      )}
     </>
   );
 };
