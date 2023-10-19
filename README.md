@@ -1,3 +1,7 @@
+## Authorization Flow
+
+![genral flow](/src/assets/general-flow.png)
+
 ## 프로젝트 환경 설정
 
 > [Next.js Environment Variables Docs](https://nextjs.org/docs/app/building-your-application/configuring/environment-variables)
