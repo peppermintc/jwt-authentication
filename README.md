@@ -1,4 +1,4 @@
-## Authorization Flow
+## Authentication Flow
 
 ![genral flow](/src/assets/general-flow.png)
 
